@@ -5,71 +5,87 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Resume — Catherine Yang</title>
 
-  <!-- Fun fonts from Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <!-- Professional fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Roboto:wght@300;400&display=swap" rel="stylesheet"/>
 
   <style>
+    :root {
+      --bg: #f4f6f8;
+      --nav-bg: #2f3e46;
+      --accent: #52796f;
+      --text: #102a43;
+      --card-bg: #ffffff;
+      --radius: 10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: #e0f7fa;
-      color: #333;
-      margin: 0;
-      font-family: 'Lato', sans-serif;
+      background: var(--bg);
+      font-family: 'Roboto', sans-serif;
+      color: var(--text);
+      line-height: 1.5;
     }
     nav {
-      background: #00acc1;
-      padding: 1rem;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    nav a {
-      margin: 0 0.75rem;
-      color: #fff;
-      text-decoration: none;
-      font-weight: 700;
-    }
-    nav a:hover {
-      color: #ffe082;
-    }
-    main {
+      background: var(--nav-bg);
+      padding: 1rem 2rem;
       display: flex;
       justify-content: center;
-      padding: 2rem 1rem;
+      gap: 1.5rem;
+      font-family: 'Montserrat', sans-serif;
     }
-    .resume-container {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      overflow: hidden;
-      max-width: 900px;
-      width: 100%;
-    }
-    .resume-header {
-      background: #00acc1;
-      padding: 1.5rem;
-      text-align: center;
-    }
-    .resume-header h1 {
-      margin: 0;
-      font-family: 'Pacifico', cursive;
+    nav a {
       color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    nav a:hover {
+      color: var(--accent);
+    }
+    main {
+      max-width: 1000px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 2rem;
+    }
+    .header {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .header .info {
+      flex: 1;
+    }
+    .header h1 {
+      font-family: 'Montserrat', sans-serif;
       font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--nav-bg);
     }
-    .resume-embed {
-      padding: 1.5rem;
+    .header .contact {
+      font-size: 0.95rem;
+      color: var(--text);
     }
-    .resume-embed embed {
+    .embed-container {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .embed-container embed {
       width: 100%;
       height: 800px;
       border: none;
-      border-radius: 8px;
     }
-    @media (max-width: 600px) {
-      .resume-header h1 {
-        font-size: 2rem;
-      }
-      .resume-embed embed {
-        height: 600px;
-      }
+    @media (max-width: 700px) {
+      .header { flex-direction: column; text-align: center; }
+      .header img { display: none; }
+      .embed-container embed { height: 600px; }
     }
   </style>
 </head>
@@ -84,13 +100,22 @@
   </nav>
 
   <main>
-    <div class="resume-container">
-      <div class="resume-header">
-        <h1>Resume</h1>
+    <!-- Header with name & contact -->
+    <div class="header">
+      <!-- Optional headshot; remove or replace src as desired -->
+      <img src="assets/photo.jpg" alt="Catherine Yang" style="width:120px; height:120px; border-radius:50%; object-fit:cover;">
+      <div class="info">
+        <h1>Catherine Yang</h1>
+        <div class="contact">
+          catherine.yang@duke.edu | (919) 638-4508<br>
+          Durham, NC • Duke University
+        </div>
       </div>
-      <div class="resume-embed">
-        <embed src="assets/CatherineResume.pdf" type="application/pdf">
-      </div>
+    </div>
+
+    <!-- Embedded PDF resume -->
+    <div class="embed-container">
+      <embed src="assets/CatherineResume.pdf" type="application/pdf">
     </div>
   </main>
 </body>
