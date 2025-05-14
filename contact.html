@@ -3,45 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>About — Catherine Yang</title>
+  <title>Contact — Catherine Yang</title>
 
   <!-- Match index page fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Open+Sans:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 
   <style>
+    :root {
+      --bg-color: #f7f9fa;
+      --nav-bg: #ffffff;
+      --nav-border: #e1e8ed;
+      --accent-color: #005f73;
+      --text-color: #102a43;
+      --subtext-color: #34495e;
+      --card-bg: #ffffff;
+      --border-radius: 8px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
+      background: var(--bg-color);
+      color: var(--text-color);
       font-family: 'Open Sans', sans-serif;
+      line-height: 1.6;
+    }
+    nav {
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--nav-border);
+      padding: 1rem 2rem;
+      text-align: center;
     }
     nav a {
+      color: var(--text-color);
+      text-decoration: none;
+      padding: 1rem;
       font-family: 'Open Sans', sans-serif;
       letter-spacing: 0.05em;
+      display: inline-block;
+      transition: color 0.2s;
     }
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.8rem;
+    nav a:hover {
+      color: var(--accent-color);
+    }
+    main {
+      padding: 2rem;
       text-align: center;
-      margin-top: 1rem;
-      color: inherit;
     }
-    p.intro, p.quIrks {
-      font-family: 'Open Sans', sans-serif;
-      font-size: 1.15rem;
-      max-width: 700px;
-      margin: 0.5rem auto 1.5rem auto;
-      text-align: center;
-      color: inherit;
-    }
-    .courses-section {
-      max-width: 800px;
+    .contact-card {
+      background: var(--card-bg);
+      border: 1px solid var(--nav-border);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      max-width: 500px;
       margin: 2rem auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
-    .courses-section h2 {
+    .contact-card h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      text-align: center;
+      font-size: 2.5rem;
+      color: var(--accent-color);
       margin-bottom: 1rem;
-      color: inherit;
+    }
+    .contact-card p {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1rem;
+      color: var(--subtext-color);
+      margin: 0.75rem 0;
+    }
+    .contact-card a {
+      color: var(--accent-color);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .contact-card a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -56,63 +95,13 @@
   </nav>
 
   <main>
-    <h1>About Me</h1>
-    <p class="intro">
-      I’m <strong>Catherine Yang</strong>, double-majoring in Biomedical Engineering and Electrical & Computer Engineering at Duke University. My passions lie in advanced optics and computational biology.
-    </p>
-
-    <p class="quIrks">
-      Outside of coursework, I enjoy photography, experimenting with baking, and relaxing with my favorite shows, <em>Hilda</em> and <em>Arrested Development</em>.
-    </p>
-
-    <section class="courses-section">
-      <h2>Course Highlights</h2>
-
-      <div class="dept">
-        <h3>Computer Science</h3>
-        <ul class="courses-list">
-          <li><strong>COMPSCI 201</strong> – Data Structures &amp; Algorithms</li>
-          <li><strong>COMPSCI 310</strong> – Operating Systems</li>
-        </ul>
-      </div>
-
-      <div class="dept">
-        <h3>Electrical &amp; Computer Engineering</h3>
-        <ul class="courses-list">
-          <li><strong>ECE 110L</strong> – Fundamentals of ECE Lab</li>
-          <li><strong>ECE 230L</strong> – Microelectronic Devices &amp; Circuits</li>
-          <li><strong>ECE 250D</strong> – Computer Architecture</li>
-          <li><strong>ECE 270DL</strong> – Fields &amp; Waves Lab</li>
-          <li><strong>ECE 280L</strong> – Signals &amp; Systems Lab</li>
-          <li><strong>ECE 555</strong> – Probability for ECE</li>
-        </ul>
-      </div>
-
-      <div class="dept">
-        <h3>Mathematics</h3>
-        <ul class="courses-list">
-          <li><strong>MATH 122L</strong> – Calculus II</li>
-          <li><strong>MATH 218D-2</strong> – Matrices &amp; Vectors</li>
-          <li><strong>MATH 219</strong> – Multivariable Calculus</li>
-          <li><strong>MATH 353</strong> – Differential Equations</li>
-        </ul>
-      </div>
-
-      <div class="dept">
-        <h3>Physics</h3>
-        <ul class="courses-list">
-          <li><strong>PHYSICS 151L</strong> – Introductory Mechanics</li>
-          <li><strong>PHYSICS 152L</strong> – Electricity, Magnetism &amp; Optics</li>
-        </ul>
-      </div>
-
-      <div class="dept">
-        <h3>Engineering Design</h3>
-        <ul class="courses-list">
-          <li><strong>EGR 101L</strong> – Engineering Design &amp; Communication</li>
-        </ul>
-      </div>
-    </section>
+    <div class="contact-card">
+      <h1>Contact</h1>
+      <p><strong>Location:</strong> Durham, North Carolina</p>
+      <p><strong>On Campus:</strong> Hudson Hall — <a href="https://www.google.com/maps/search/?api=1&query=Hudson+Hall+Duke+University" target="_blank">View map</a></p>
+      <p><strong>Phone:</strong> <a href="tel:+19196384508">(919) 638-4508</a></p>
+      <p><strong>Email:</strong> <a href="mailto:catherine.yang@duke.edu">catherine.yang@duke.edu</a></p>
+    </div>
   </main>
 </body>
 </html>

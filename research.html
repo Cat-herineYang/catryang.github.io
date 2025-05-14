@@ -10,13 +10,46 @@
   <link rel="stylesheet" href="style.css" />
 
   <style>
+    :root {
+      --primary-color: #2c3e50;
+      --accent-color: #005f73;
+      --text-color: #102a43;
+      --bg-color: #f7f9fa;
+      --card-bg: #ffffff;
+      --border: #e1e8ed;
+      --radius: 6px;
+    }
     /* Typography */
     body {
+      background: var(--bg-color);
+      color: var(--text-color);
       font-family: 'Open Sans', sans-serif;
+      line-height: 1.6;
+      margin: 0;
+    }
+    nav {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
     }
     nav a {
       font-family: 'Open Sans', sans-serif;
       letter-spacing: 0.05em;
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover {
+      color: var(--accent-color);
+    }
+    main {
+      max-width: 720px;
+      margin: 4rem auto;
+      padding: 0 1rem;
     }
     h1 {
       font-family: 'Playfair Display', serif;
@@ -71,6 +104,11 @@
       50%  { width: 60%; }
       100% { width: 20%; }
     }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .placeholder { padding: 2rem 1rem; }
+    }
   </style>
 </head>
 <body>
@@ -87,7 +125,7 @@
     <h1>Research</h1>
     <div class="placeholder">
       <h2>Under Construction</h2>
-      <p>I'm gathering my latest research—check back soon!</p>
+      <p>Check back soon</p>
       <div class="progress-bar">
         <div></div>
       </div>
