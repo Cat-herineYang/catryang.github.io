@@ -5,37 +5,136 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Mentee Info Processor — Catherine Yang</title>
 
-  <!-- Aesthetic fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Open+Sans:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css" />
 
   <style>
+    :root {
+      --accent-color: #005f73;
+      --text-color: #102a43;
+      --bg-color: #f7f9fa;
+      --card-bg: #ffffff;
+      --border-color: #e1e8ed;
+      --radius: 6px;
+    }
     body {
+      margin: 0;
+      background: var(--bg-color);
+      color: var(--text-color);
       font-family: 'Open Sans', sans-serif;
+      line-height: 1.6;
+    }
+    nav {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
     }
     nav a {
       font-family: 'Open Sans', sans-serif;
       letter-spacing: 0.05em;
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover {
+      color: var(--accent-color);
+    }
+    main {
+      max-width: 720px;
+      margin: 4rem auto;
+      padding: 0 1rem;
     }
     h1 {
       font-family: 'Playfair Display', serif;
       font-size: 2.8rem;
-      margin-top: 1rem;
       text-align: center;
+      color: var(--accent-color);
+      margin-bottom: 1.5rem;
     }
-    p.description, p.description ol, p.description ol li {
-      font-family: 'Open Sans', sans-serif;
+    .container {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    }
+    p.description {
       font-size: 1.15rem;
-      max-width: 600px;
-      margin: 1rem auto 0;
+      line-height: 1.6;
       text-align: left;
-      line-height: 1.5;
+      margin-bottom: 1.5rem;
     }
-    input[type="file"],
-    button,
-    #errors,
-    #downloadLink {
+    p.description ol {
+      padding-left: 1.25rem;
+    }
+    code {
+      background: #eef3f3;
+      padding: 0 4px;
+      border-radius: 4px;
+    }
+
+    input[type="file"] {
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      border: 1px solid var(--accent-color);
+      border-radius: var(--radius);
+      padding: 0.6rem 1.2rem;
+      color: var(--accent-color);
       font-family: 'Open Sans', sans-serif;
+      cursor: pointer;
+      margin: 1rem auto;
+      display: block;
+    }
+    input[type="file"]::file-selector-button {
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin-right: 0.5rem;
+      color: var(--accent-color);
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    button,
+    #downloadLink {
+      background: transparent;
+      border: 1px solid var(--accent-color);
+      border-radius: var(--radius);
+      padding: 0.6rem 1.2rem;
+      color: var(--accent-color);
+      font-family: 'Open Sans', sans-serif;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin: 1rem auto 0;
+    }
+    button:disabled {
+      border-color: var(--border-color);
+      color: var(--border-color);
+      cursor: not-allowed;
+    }
+    button:hover:not(:disabled),
+    #downloadLink:hover {
+      background: var(--accent-color);
+      color: #fff;
+    }
+
+    #errors {
+      margin-top: 1rem;
+      text-align: left;
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 0.5rem;
+      border: 1px solid #e0b4b4;
+      border-radius: 4px;
+      background: #fff1f0;
+      color: #b02a37;
+      font-size: 0.95rem;
     }
   </style>
 </head>
@@ -53,14 +152,25 @@
     <h1>Mentee Info Processor</h1>
     <div class="container">
       <p class="description">
-        Upload your <code>mentee_info.csv</code>. This tool will:
+        This tool takes the raw CSV exports from your Qualtrics surveys—
+        <code>mentee_info.csv</code> and optionally <code>mentor_info.csv</code>—
+        and prepares them for direct input into your matching algorithm.
+      </p>
+      <p class="description">
+        Instructions:
         <ol>
-          <li>Keep only required columns (Name, Email, Major, Industry, GradArea, Goal, Ethnicity, Identity, AffinityGroup, plus six weighting fields).</li>
-          <li><strong>Year</strong> is optional.</li>
-          <li>Add a <code>NumStudent</code> column initialized to 0.</li>
-          <li>Validate each row (names contain no digits; weightings are numeric).</li>
-          <li>Report missing columns or invalid values.</li>
-          <li>Allow download of the cleaned CSV if no errors remain.</li>
+          <li>Export your Qualtrics survey responses as CSV files and save them as <code>mentee_info.csv</code> (and <code>mentor_info.csv</code> if using).</li>
+          <li>Place these CSV files in the same directory where this page is hosted.</li>
+          <li>Click “Process CSV” to:
+            <ol type="a">
+              <li>Keep only required columns (<strong>Name, Email, Major, Industry, GradArea, Goal, Ethnicity, Identity, AffinityGroup, plus six weighting fields</strong>).</li>
+              <li>Pass through <strong>Year</strong> if present (optional).</li>
+              <li>Add a <code>NumStudent</code> column initialized to <code>0</code>.</li>
+              <li>Validate rows (names must not contain digits; weightings must be numeric).</li>
+              <li>Report any missing columns or invalid values below.</li>
+              <li>If no errors remain, download the cleaned CSV for your matching algorithm.</li>
+            </ol>
+          </li>
         </ol>
       </p>
 
@@ -71,7 +181,6 @@
     </div>
   </main>
 
-  <!-- PapaParse for CSV parsing -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
   <script>
     const requiredCols = [
@@ -102,12 +211,11 @@
       errorsDiv.textContent = '';
       downloadLink.style.display = 'none';
     });
-
+    
     processBtn.addEventListener('click', () => {
       errorsDiv.textContent = '';
       downloadLink.style.display = 'none';
-      const file = fileInput.files[0];
-      Papa.parse(file, {
+      Papa.parse(fileInput.files[0], {
         header: true,
         skipEmptyLines: true,
         complete: ({ data, errors }) => {
@@ -115,56 +223,38 @@
           if (errors.length) {
             errors.forEach(e => msgs.push(`Parse error: ${e.message}`));
           }
-
-          // Check required columns
           const headers = Object.keys(data[0] || {});
           requiredCols.forEach(col => {
-            if (!headers.includes(col)) {
-              msgs.push(`Missing column: ${col}`);
-            }
+            if (!headers.includes(col)) msgs.push(`Missing column: ${col}`);
           });
-
-          // Validate each row
-          data.forEach((row, i) => {
-            const rowNum = i + 1;
-            if (!isListOfStrings(row.Name) || hasDigit(row.Name)) {
-              msgs.push(`Invalid Name at row ${rowNum}: "${row.Name}"`);
-            }
+          data.forEach((row,i) => {
+            const r = i+1;
+            if (!isListOfStrings(row.Name)||hasDigit(row.Name))
+              msgs.push(`Invalid Name at row ${r}: "${row.Name}"`);
             ['Email','Major','Industry','GradArea','Goal','Ethnicity','Identity','AffinityGroup']
-              .forEach(field => {
-                if (!isListOfStrings(row[field])) {
-                  msgs.push(`Invalid ${field} at row ${rowNum}: "${row[field]}"`);
-                }
-              });
+              .forEach(f=>{ if(!isListOfStrings(row[f])) msgs.push(`Invalid ${f} at row ${r}: "${row[f]}"`) });
             ['EthnicityWeighting','IdentityWeighting','AcademicWeighting','GraduateWeighting','IndustryWeighting','GoalWeighting','AffinityWeighting']
-              .forEach(field => {
-                if (!isNumber(row[field])) {
-                  msgs.push(`Invalid ${field} at row ${rowNum}: "${row[field]}"`);
-                }
-              });
+              .forEach(f=>{ if(!isNumber(row[f])) msgs.push(`Invalid ${f} at row ${r}: "${row[f]}"`) });
           });
-
           if (msgs.length) {
-            errorsDiv.innerHTML = msgs.map(m => `<div>• ${m}</div>`).join('');
+            errorsDiv.innerHTML = msgs.map(m=>`<div>• ${m}</div>`).join('');
             return;
           }
-
-          // Build and download cleaned CSV
-          const cleaned = data.map(row => {
-            const out = {};
-            requiredCols.forEach(col => out[col] = row[col] || '');
-            out.NumStudent = 0;
-            return out;
+          const cleaned = data.map(r=>{
+            const o={};
+            requiredCols.forEach(c=>o[c]=r[c]||'');
+            o.NumStudent=0;
+            return o;
           });
           const csv = Papa.unparse(cleaned);
-          const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-          const url = URL.createObjectURL(blob);
-          downloadLink.href = url;
+          const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+          downloadLink.href = URL.createObjectURL(blob);
           downloadLink.download = 'mentee_info_cleaned.csv';
-          downloadLink.style.display = 'block';
+          downloadLink.style.display = 'inline-block';
         }
       });
     });
   </script>
+
 </body>
 </html>
