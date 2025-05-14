@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>CSV Info Processor — Catherine Yang</title>
 
-  <!-- Aesthetic fonts matching index page -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Open+Sans:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css"/>
 
   <style>
     body {
@@ -15,6 +13,7 @@
       background: #f7f9fa;
       color: #102a43;
       margin: 0;
+      padding: 0;
     }
     h1 {
       font-family: 'Playfair Display', serif;
@@ -22,6 +21,14 @@
       text-align: center;
       color: #005f73;
       margin: 1rem 0;
+    }
+    p, li {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1.15rem;
+      max-width: 600px;
+      margin: 1rem auto 0;
+      text-align: left;
+      line-height: 1.6;
     }
     .container {
       max-width: 720px;
@@ -31,15 +38,6 @@
       border: 1px solid #e1e8ed;
       border-radius: 6px;
       box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-    }
-    .description {
-      font-size: 1.15rem;
-      line-height: 1.6;
-      text-align: left;
-      margin-bottom: 1.5rem;
-    }
-    .description ol {
-      padding-left: 1.25rem;
     }
     code {
       background: #eef3f3;
@@ -59,7 +57,6 @@
       margin: 1rem auto 0;
       text-decoration: none;
       text-align: center;
-      font-family: 'Open Sans', sans-serif;
       letter-spacing: 0.05em;
     }
     input[type="file"]::file-selector-button {
@@ -69,7 +66,6 @@
       margin-right: 0.5rem;
       color: #005f73;
       cursor: pointer;
-      font-family: inherit;
     }
     button:disabled {
       border-color: #e1e8ed;
@@ -91,8 +87,6 @@
       color: #b02a37;
       font-size: 0.95rem;
       text-align: left;
-      line-height: 1.4;
-      font-family: 'Open Sans', sans-serif;
     }
   </style>
 </head>
@@ -100,15 +94,13 @@
   <main>
     <h1>CSV Info Processor</h1>
     <div class="container">
-      <p class="description">
-        Drop your Qualtrics CSV export named <code>mentee_info.csv</code> (and optionally <code>mentor_info.csv</code>) onto the button below. This tool:
-      </p>
-      <p class="description">
+      <p>Drop your Qualtrics CSV export named <code>mentee_info.csv</code> (and optionally <code>mentor_info.csv</code>) onto the button below. This tool:</p>
+      <p>
         <ol>
-          <li>Requires only <strong>Name</strong> and <strong>Email</strong> (everything else is optional).</li>
+          <li>Requires only Name and Email (everything else is optional).</li>
           <li>Adds a <code>NumStudent</code> column initialized to <code>0</code>.</li>
-          <li>Validates each <strong>Name</strong> (no digits) and <strong>Email</strong> (non-empty).</li>
-          <li>Detects duplicates where both Name <em>and</em> Email match exactly.</li>
+          <li>Validates each Name (no digits) and Email (non-empty).</li>
+          <li>Detects duplicates where both Name and Email match exactly.</li>
           <li>Keeps any of these optional columns if present:
             <code>Major, Industry, GradArea, Goal, Ethnicity, Identity, AffinityGroup, EthnicityWeighting, IdentityWeighting, AcademicWeighting, GraduateWeighting, IndustryWeighting, GoalWeighting, AffinityWeighting</code>.
           </li>
@@ -177,15 +169,12 @@
           const seen = new Set();
           data.forEach((row, i) => {
             const r = i + 1;
-            // Name
             if (!isListOfStrings(row.Name) || row.Name.trim() === '' || hasDigit(row.Name)) {
               msgs.push(`Invalid Name at row ${r}: "${row.Name}"`);
             }
-            // Email
             if (!isListOfStrings(row.Email) || row.Email.trim() === '') {
               msgs.push(`Invalid Email at row ${r}: "${row.Email}"`);
             }
-            // duplicate
             const key = row.Name.trim().toLowerCase() + '|' + row.Email.trim().toLowerCase();
             if (seen.has(key)) {
               msgs.push(`Duplicate entry at row ${r}: Name & Email both match.`);
@@ -203,16 +192,11 @@
           const presentOptional = optionalCols.filter(col => headers.includes(col));
           const outputCols      = [...requiredCols, ...presentOptional, 'NumStudent'];
 
-          // build cleaned data
           try {
             const cleaned = data.map(row => {
               const out = {};
               outputCols.forEach(col => {
-                if (col === 'NumStudent') {
-                  out[col] = 0;
-                } else {
-                  out[col] = row[col] || '';
-                }
+                out[col] = (col === 'NumStudent') ? 0 : (row[col] || '');
               });
               return out;
             });
