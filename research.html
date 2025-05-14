@@ -5,61 +5,31 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Research — Catherine Yang</title>
 
-  <!-- Professional fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Source+Sans+Pro:wght@300;400&display=swap" rel="stylesheet"/>
+  <!-- Match index page fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Open+Sans:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 
   <style>
-    :root {
-      --bg-color: #f7f9fa;
-      --nav-bg: #ffffff;
-      --accent: #005f73;
-      --text: #102a43;
-      --card-bg: #ffffff;
-      --border: #e1e8ed;
-      --radius: 6px;
-    }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    /* Typography */
     body {
-      background: var(--bg-color);
-      color: var(--text);
-      font-family: 'Source Sans Pro', sans-serif;
-      line-height: 1.6;
-    }
-    nav {
-      background: var(--nav-bg);
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      font-family: 'Rubik', sans-serif;
+      font-family: 'Open Sans', sans-serif;
     }
     nav a {
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-    nav a:hover {
-      color: var(--accent);
-    }
-    main {
-      max-width: 720px;
-      margin: 4rem auto;
-      padding: 0 1rem;
+      font-family: 'Open Sans', sans-serif;
+      letter-spacing: 0.05em;
     }
     h1 {
-      font-family: 'Rubik', sans-serif;
-      font-size: 2.4rem;
-      color: var(--accent);
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
       text-align: center;
-      margin-bottom: 2rem;
+      margin: 2rem 0;
+      color: var(--accent-color);
     }
+
+    /* Placeholder card */
     .placeholder {
+      max-width: 600px;
+      margin: 0 auto 3rem;
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -68,16 +38,19 @@
       box-shadow: 0 3px 8px rgba(0,0,0,0.05);
     }
     .placeholder h2 {
-      font-family: 'Rubik', sans-serif;
+      font-family: 'Playfair Display', serif;
       font-size: 1.8rem;
-      color: var(--text);
+      color: var(--primary-color);
       margin-bottom: 0.75rem;
     }
     .placeholder p {
-      font-size: 1rem;
-      color: #415a77;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1.15rem;
+      color: var(--text-color);
       margin-bottom: 1.5rem;
     }
+
+    /* Animated progress bar */
     .progress-bar {
       position: relative;
       width: 100%;
@@ -89,18 +62,14 @@
     .progress-bar div {
       width: 40%;
       height: 100%;
-      background: var(--accent);
+      background: var(--accent-color);
       border-radius: var(--radius);
       animation: progress 2s ease-in-out infinite;
     }
     @keyframes progress {
-      0% { width: 20%; }
-      50% { width: 60%; }
+      0%   { width: 20%; }
+      50%  { width: 60%; }
       100% { width: 20%; }
-    }
-    @media (max-width: 600px) {
-      h1 { font-size: 2rem; }
-      .placeholder { padding: 2rem 1rem; }
     }
   </style>
 </head>
@@ -118,7 +87,7 @@
     <h1>Research</h1>
     <div class="placeholder">
       <h2>Under Construction</h2>
-      <p>Check back soon!</p>
+      <p>I'm gathering my latest research—check back soon!</p>
       <div class="progress-bar">
         <div></div>
       </div>

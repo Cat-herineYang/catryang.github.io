@@ -5,51 +5,37 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Projects — Catherine Yang</title>
 
-  <!-- Playful fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Quicksand:wght@300;500&display=swap" rel="stylesheet"/>
+  <!-- Match index page fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Open+Sans:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 
   <style>
+    /* Font overrides to match index */
     body {
-      background: #fafafa;
-      margin: 0;
-      font-family: 'Quicksand', sans-serif;
-      color: #333;
-    }
-    nav {
-      background: #ffe0b2;
-      padding: 1rem;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      font-family: 'Open Sans', sans-serif;
     }
     nav a {
-      margin: 0 0.75rem;
-      color: #5d4037;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    nav a:hover {
-      color: #bf360c;
-    }
-    main {
-      max-width: 1000px;
-      margin: 2rem auto;
-      padding: 0 1rem;
+      font-family: 'Open Sans', sans-serif;
+      letter-spacing: 0.05em;
     }
     h1 {
-      font-family: 'Kalam', cursive;
-      font-size: 2.5rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
       text-align: center;
-      color: #d84315;
-      margin-bottom: 1rem;
+      margin-top: 1rem;
+      color: inherit;
     }
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
     }
     .project-card {
-      background: #fff;
-      border-radius: 12px;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
       padding: 1.5rem;
       transition: transform 0.2s;
@@ -58,23 +44,26 @@
       transform: translateY(-5px);
     }
     .project-card h2 {
-      font-family: 'Kalam', cursive;
-      color: #bf360c;
-      font-size: 1.5rem;
+      font-family: 'Playfair Display', serif;
       margin-bottom: 0.5rem;
+      color: var(--accent-color);
+      font-size: 1.5rem;
+    }
+    .project-card h2 a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .project-card h2 a:hover {
+      text-decoration: underline;
     }
     .project-card p {
-      font-size: 1rem;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1.05rem;
       line-height: 1.4;
-      margin-bottom: 0.75rem;
+      color: var(--text-color);
     }
-    .project-card a {
-      color: #d84315;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .project-card a:hover {
-      text-decoration: underline;
+    main {
+      padding: 2rem 0;
     }
   </style>
 </head>
@@ -91,8 +80,8 @@
   <main>
     <h1>Projects</h1>
     <div class="projects-grid">
-
-    <div class="project-card">
+      
+      <div class="project-card">
         <h2><a href="https://pratt.duke.edu/news/catherine-yang-goes-above-and-beyond/" target="_blank">DukeNY Blue Devils Beyond</a></h2>
         <p>Volunteer Algorithm and Toolkit Developer.</p>
       </div>

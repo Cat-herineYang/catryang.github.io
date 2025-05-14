@@ -4,10 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Welcome — Catherine Yang</title>
+  <!-- Aesthetic fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Open+Sans:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      /* keep existing theme colors, just swap font */
+      font-family: 'Open Sans', sans-serif;
+    }
+    nav a {
+      font-family: 'Open Sans', sans-serif;
+      letter-spacing: 0.05em;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      margin-top: 1rem;
+    }
+    p {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1.15rem;
+      max-width: 600px;
+      margin: 1rem auto 0;
+    }
+  </style>
 </head>
 <body>
-  <!-- nav pasted here -->
   <nav>
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
@@ -17,10 +39,10 @@
     <a href="contact.html">Contact</a>
   </nav>
 
-  <main>
+  <main style="text-align:center; padding:2rem;">
     <h1>Welcome!</h1>
-    <img class="profile" src="assets/CatherineChapelHeadshot.jpg" alt="Catherine Yang" />
-    <p>Hi, I’m Catherine—a BME+ECE student at Duke. Feel free to look around!</p>
+    <img class="profile" src="assets/CatherineChapelHeadshot.jpg" alt="Catherine Yang" style="border-radius:50%; max-width:200px; margin:1.5rem auto; display:block;" />
+    <p>Hi, I’m Catherine—a BME + ECE student at Duke. Feel free to look around!</p>
   </main>
 </body>
 </html>

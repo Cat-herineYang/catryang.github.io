@@ -5,87 +5,35 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Resume — Catherine Yang</title>
 
-  <!-- Professional fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Roboto:wght@300;400&display=swap" rel="stylesheet"/>
+  <!-- Match index page fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Open+Sans:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 
   <style>
-    :root {
-      --bg: #f4f6f8;
-      --nav-bg: #2f3e46;
-      --accent: #52796f;
-      --text: #102a43;
-      --card-bg: #ffffff;
-      --radius: 10px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: var(--bg);
-      font-family: 'Roboto', sans-serif;
-      color: var(--text);
-      line-height: 1.5;
-    }
-    nav {
-      background: var(--nav-bg);
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Open Sans', sans-serif;
     }
     nav a {
-      color: #fff;
+      font-family: 'Open Sans', sans-serif;
+      letter-spacing: 0.05em;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      text-align: center;
+      margin-top: 1.5rem;
+      color: inherit;
+    }
+    main p, main a {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1.15rem;
+      text-align: center;
+      margin-top: 1rem;
+      color: inherit;
       text-decoration: none;
-      font-weight: 600;
-      transition: color 0.2s;
     }
-    nav a:hover {
-      color: var(--accent);
-    }
-    main {
-      max-width: 1000px;
-      margin: 3rem auto;
-      padding: 0 2rem;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      gap: 2rem;
-    }
-    .header {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 2rem;
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-    .header .info {
-      flex: 1;
-    }
-    .header h1 {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-      color: var(--nav-bg);
-    }
-    .header .contact {
-      font-size: 0.95rem;
-      color: var(--text);
-    }
-    .embed-container {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-    .embed-container embed {
-      width: 100%;
-      height: 800px;
-      border: none;
-    }
-    @media (max-width: 700px) {
-      .header { flex-direction: column; text-align: center; }
-      .header img { display: none; }
-      .embed-container embed { height: 600px; }
+    main a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -99,24 +47,9 @@
     <a href="contact.html">Contact</a>
   </nav>
 
-  <main>
-    <!-- Header with name & contact -->
-    <div class="header">
-      <!-- Optional headshot; remove or replace src as desired -->
-      <img src="assets/CatherineChapelHeadshot.jpg" alt="Catherine Yang" style="width:120px; height:120px; border-radius:50%; object-fit:cover;">
-      <div class="info">
-        <h1>Catherine Yang</h1>
-        <div class="contact">
-          catherine.yang@duke.edu | (919) 638-4508<br>
-          Durham, NC • Duke University
-        </div>
-      </div>
-    </div>
-
-    <!-- Embedded PDF resume -->
-    <div class="embed-container">
-      <embed src="assets/CatherineResume.pdf" type="application/pdf">
-    </div>
+  <main style="padding: 2rem;">
+    <h1>Resume</h1>
+    <p><a href="assets/CatherineResume.pdf" download>Download my resume (PDF)</a></p>
   </main>
 </body>
 </html>
