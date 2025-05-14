@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mentee Info Processor — Catherine Yang</title>
+
+  <!-- Match index page fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Open+Sans:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --accent-color: #005f73;
+      --text-color: #102a43;
+      --bg-color: #f7f9fa;
+      --card-bg: #ffffff;
+      --border: #e1e8ed;
+      --radius: 6px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Open Sans', sans-serif;
+      line-height: 1.6;
+    }
+    nav {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+    }
+    nav a {
+      font-family: 'Open Sans', sans-serif;
+      letter-spacing: 0.05em;
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover {
+      color: var(--accent-color);
+    }
+    main {
+      max-width: 720px;
+      margin: 4rem auto;
+      padding: 0 1rem;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--accent-color);
+    }
+    .container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    }
+    p.description {
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+    input[type="file"] {
+      display: block;
+      margin: 1rem auto;
+    }
+    button {
+      display: block;
+      margin: 1rem auto;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      font-family: 'Open Sans', sans-serif;
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
+    button:disabled {
+      background: var(--border);
+      cursor: not-allowed;
+    }
+    #errors {
+      margin-top: 1rem;
+      color: #b02a37;
+      font-size: 0.95rem;
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 0.5rem;
+      border: 1px solid #e0b4b4;
+      border-radius: 4px;
+      background: #fff1f0;
+    }
+    #downloadLink {
+      display: none;
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: 500;
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+    #downloadLink:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="resume.html">Resume</a>
+    <a href="projects.html">Projects</a>
+    <a href="research.html">Research</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
+  <main>
+    <h1>Mentee Info Processor</h1>
+    <div class="container">
+      <p class="description">
+        Upload your <code>mentee_info.csv</code>. This tool will:
+        <ol>
+          <li>Keep only the required columns (<strong>Name</strong>, <strong>Email</strong>, <strong>Year</strong>, <strong>Major</strong>, <strong>Industry</strong>, <strong>GradArea</strong>, <strong>Goal</strong>, <strong>Ethnicity</strong>, <strong>Identity</strong>, <strong>AffinityGroup</strong>, and the six weighting fields).</li>
+          <li>Add a <code>NumStudent</code> column initialized to 0.</li>
+          <li>Validate each row (e.g. names contain no digits, weightings are integers).</li>
+          <li>Report any missing columns or invalid values.</li>
+          <li>Let you download the cleaned CSV if no errors remain.</li>
+        </ol>
+      </p>
+
+      <input type="file" id="fileInput" accept=".csv" />
+      <button id="processBtn" disabled>Process CSV</button>
+      <div id="errors"></div>
+      <a id="downloadLink">Download Cleaned CSV</a>
+    </div>
+  </main>
+
+  <!-- PapaParse for CSV parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+  <script>
+    const requiredCols = [
+      'Name','Email','Year','Major','Industry','GradArea','Goal',
+      'Ethnicity','Identity','AffinityGroup',
+      'EthnicityWeighting','IdentityWeighting','AcademicWeighting',
+      'GraduateWeighting','IndustryWeighting','GoalWeighting',
+      'AffinityWeighting'
+    ];
+
+    function isInteger(val) {
+      return val === '' || /^-?\d+$/.test(val.toString().trim());
+    }
+    function isListOfStrings(val) {
+      return val === '' || typeof val === 'string';
+    }
+    function hasDigit(str) {
+      return /\d/.test(str);
+    }
+
+    const fileInput = document.getElementById('fileInput');
+    const processBtn = document.getElementById('processBtn');
+    const errorsDiv = document.getElementById('errors');
+    const downloadLink = document.getElementById('downloadLink');
+
+    fileInput.addEventListener('change', () => {
+      processBtn.disabled = !fileInput.files.length;
+      errorsDiv.textContent = '';
+      downloadLink.style.display = 'none';
+    });
+
+    processBtn.addEventListener('click', () => {
+      errorsDiv.textContent = '';
+      downloadLink.style.display = 'none';
+      const file = fileInput.files[0];
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: ({ data, errors }) => {
+          const msgs = [];
+          if (errors.length) {
+            errors.forEach(e => msgs.push(`Parse error: ${e.message}`));
+          }
+          // Check columns
+          const headers = Object.keys(data[0] || {});
+          requiredCols.forEach(col => {
+            if (!headers.includes(col)) {
+              msgs.push(`Missing column: ${col}`);
+            }
+          });
+          // Validate rows
+          data.forEach((row, i) => {
+            const rowNum = i + 1;
+            if (!isListOfStrings(row.Name) || hasDigit(row.Name)) {
+              msgs.push(`Invalid Name at row ${rowNum}: "${row.Name}"`);
+            }
+            ['Email','Year','Major','Industry','GradArea','Goal','Ethnicity','Identity','AffinityGroup']
+              .forEach(field => {
+                if (!isListOfStrings(row[field])) {
+                  msgs.push(`Invalid ${field} at row ${rowNum}: "${row[field]}"`);
+                }
+              });
+            ['EthnicityWeighting','IdentityWeighting','AcademicWeighting','GraduateWeighting','IndustryWeighting','GoalWeighting','AffinityWeighting']
+              .forEach(field => {
+                if (!isInteger(row[field])) {
+                  msgs.push(`Invalid ${field} at row ${rowNum}: "${row[field]}"`);
+                }
+              });
+          });
+          if (msgs.length) {
+            errorsDiv.innerHTML = msgs.map(m => `<div>• ${m}</div>`).join('');
+            return;
+          }
+          // Build cleaned data
+          const cleaned = data.map(row => {
+            const out = {};
+            requiredCols.forEach(col => out[col] = row[col] || '');
+            out.NumStudent = 0;
+            return out;
+          });
+          const csv = Papa.unparse(cleaned);
+          const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+          const url = URL.createObjectURL(blob);
+          downloadLink.href = url;
+          downloadLink.download = 'mentee_info_cleaned.csv';
+          downloadLink.style.display = 'block';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
