@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>CSV Info Processor — Catherine Yang</title>
 
+  <!-- Aesthetic fonts matching index page -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Open+Sans:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet"/>
 
   <style>
@@ -12,8 +13,7 @@
       font-family: 'Open Sans', sans-serif;
       background: #f7f9fa;
       color: #102a43;
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
     }
     h1 {
       font-family: 'Playfair Display', serif;
@@ -44,9 +44,9 @@
       padding: 0 4px;
       border-radius: 4px;
     }
-    input[type="file"],
-    button,
-    #downloadLink {
+
+    /* Buttons & upload label */
+    #uploadBtn, button, #downloadLink {
       background: transparent;
       border: 1px solid #005f73;
       border-radius: 6px;
@@ -58,14 +58,11 @@
       text-decoration: none;
       text-align: center;
       letter-spacing: 0.05em;
+      font-family: 'Open Sans', sans-serif;
     }
-    input[type="file"]::file-selector-button {
-      background: transparent;
-      border: none;
-      padding: 0;
-      margin-right: 0.5rem;
-      color: #005f73;
-      cursor: pointer;
+    #uploadBtn.uploaded {
+      background: #005f73;
+      color: #fff;
     }
     button:disabled {
       border-color: #e1e8ed;
@@ -88,6 +85,10 @@
       font-size: 0.95rem;
       text-align: left;
     }
+    /* hide native file input */
+    #fileInput {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -95,20 +96,21 @@
     <h1>CSV Info Processor</h1>
     <div class="container">
       <p>Drop your Qualtrics CSV export named <code>mentee_info.csv</code> (and optionally <code>mentor_info.csv</code>) onto the button below. This tool:</p>
-      <p>
-        <ol>
-          <li>Requires only Name and Email (everything else is optional).</li>
-          <li>Adds a <code>NumStudent</code> column initialized to <code>0</code>.</li>
-          <li>Validates each Name (no digits) and Email (non-empty).</li>
-          <li>Detects duplicates where both Name and Email match exactly.</li>
-          <li>Keeps any of these optional columns if present:
-            <code>Major, Industry, GradArea, Goal, Ethnicity, Identity, AffinityGroup, EthnicityWeighting, IdentityWeighting, AcademicWeighting, GraduateWeighting, IndustryWeighting, GoalWeighting, AffinityWeighting</code>.
-          </li>
-          <li>Shows errors below if any; otherwise a download link appears for the cleaned CSV.</li>
-        </ol>
-      </p>
+      <ol>
+        <li>Requires only Name and Email (everything else is optional).</li>
+        <li>Adds a <code>NumStudent</code> column initialized to <code>0</code>.</li>
+        <li>Validates each Name (no digits) and Email (non-empty).</li>
+        <li>Detects duplicates where both Name and Email match exactly.</li>
+        <li>Keeps any of these optional columns if present:
+          <code>Major, Industry, GradArea, Goal, Ethnicity, Identity, AffinityGroup, EthnicityWeighting, IdentityWeighting, AcademicWeighting, GraduateWeighting, IndustryWeighting, GoalWeighting, AffinityWeighting</code>.
+        </li>
+        <li>Shows errors below if any; otherwise a download link appears for the cleaned CSV.</li>
+      </ol>
 
+      <!-- hidden file input + styled label -->
       <input type="file" id="fileInput" accept=".csv"/>
+      <label id="uploadBtn" for="fileInput">Upload CSV File</label>
+
       <button id="processBtn" disabled>Process CSV</button>
       <div id="errors"></div>
       <a id="downloadLink">Download Cleaned CSV</a>
@@ -134,12 +136,19 @@
     }
 
     const fileInput    = document.getElementById('fileInput');
+    const uploadBtn    = document.getElementById('uploadBtn');
     const processBtn   = document.getElementById('processBtn');
     const errorsDiv    = document.getElementById('errors');
     const downloadLink = document.getElementById('downloadLink');
 
     fileInput.addEventListener('change', () => {
-      processBtn.disabled        = !fileInput.files.length;
+      if (fileInput.files.length) {
+        uploadBtn.classList.add('uploaded');
+        processBtn.disabled = false;
+      } else {
+        uploadBtn.classList.remove('uploaded');
+        processBtn.disabled = true;
+      }
       errorsDiv.innerHTML        = '';
       downloadLink.style.display = 'none';
     });
@@ -149,38 +158,28 @@
       downloadLink.style.display = 'none';
 
       Papa.parse(fileInput.files[0], {
-        header: true,
-        skipEmptyLines: true,
-        error: err => {
-          errorsDiv.textContent = 'Parsing error: ' + err.message;
-        },
+        header: true, skipEmptyLines: true,
+        error: err => { errorsDiv.textContent = 'Parsing error: ' + err.message },
         complete: ({ data, errors }) => {
           const msgs = [];
-          // parse errors
           errors.forEach(e => msgs.push(`Parse error: ${e.message}`));
 
-          // header check
           const headers = Object.keys(data[0] || {});
           requiredCols.forEach(col => {
             if (!headers.includes(col)) msgs.push(`Missing column: ${col}`);
           });
 
-          // row validation & duplicates
           const seen = new Set();
-          data.forEach((row, i) => {
-            const r = i + 1;
-            if (!isListOfStrings(row.Name) || row.Name.trim() === '' || hasDigit(row.Name)) {
+          data.forEach((row,i) => {
+            const r = i+1;
+            if (!isListOfStrings(row.Name)||row.Name.trim()===''||hasDigit(row.Name))
               msgs.push(`Invalid Name at row ${r}: "${row.Name}"`);
-            }
-            if (!isListOfStrings(row.Email) || row.Email.trim() === '') {
+            if (!isListOfStrings(row.Email)||row.Email.trim()==='')
               msgs.push(`Invalid Email at row ${r}: "${row.Email}"`);
-            }
-            const key = row.Name.trim().toLowerCase() + '|' + row.Email.trim().toLowerCase();
+            const key = row.Name.trim().toLowerCase()+'|'+row.Email.trim().toLowerCase();
             if (seen.has(key)) {
               msgs.push(`Duplicate entry at row ${r}: Name & Email both match.`);
-            } else {
-              seen.add(key);
-            }
+            } else seen.add(key);
           });
 
           if (msgs.length) {
@@ -188,24 +187,21 @@
             return;
           }
 
-          // determine which optional columns are present
-          const presentOptional = optionalCols.filter(col => headers.includes(col));
+          const presentOptional = optionalCols.filter(c => headers.includes(c));
           const outputCols      = [...requiredCols, ...presentOptional, 'NumStudent'];
 
           try {
             const cleaned = data.map(row => {
               const out = {};
-              outputCols.forEach(col => {
-                out[col] = (col === 'NumStudent') ? 0 : (row[col] || '');
-              });
+              outputCols.forEach(c => out[c] = c==='NumStudent'?0:(row[c]||''));
               return out;
             });
-            const csv  = Papa.unparse({ fields: outputCols, data: cleaned });
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const csv = Papa.unparse({ fields: outputCols, data: cleaned });
+            const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
             downloadLink.href     = URL.createObjectURL(blob);
             downloadLink.download = 'mentee_info_cleaned.csv';
             downloadLink.style.display = 'block';
-          } catch (e) {
+          } catch(e) {
             errorsDiv.textContent = 'Error generating download: ' + e.message;
           }
         }
