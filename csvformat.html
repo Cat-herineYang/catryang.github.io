@@ -49,12 +49,12 @@
       max-width: 720px;
       margin: 4rem auto;
       padding: 0 1rem;
+      text-align: center;
     }
     h1 {
       font-family: 'Playfair Display', serif;
       font-size: 2.8rem;
-      text-align: center;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
       color: var(--accent-color);
     }
     .container {
@@ -65,9 +65,10 @@
       box-shadow: 0 3px 8px rgba(0,0,0,0.05);
     }
     p.description {
-      margin-bottom: 1.5rem;
       font-size: 1.1rem;
-      text-align: center;
+      margin-bottom: 1.5rem;
+      text-align: left;
+      line-height: 1.5;
     }
     input[type="file"] {
       display: block;
@@ -93,6 +94,7 @@
       margin-top: 1rem;
       color: #b02a37;
       font-size: 0.95rem;
+      text-align: left;
       max-height: 200px;
       overflow-y: auto;
       padding: 0.5rem;
@@ -102,7 +104,6 @@
     }
     #downloadLink {
       display: none;
-      text-align: center;
       margin-top: 1rem;
       font-weight: 500;
       color: var(--accent-color);
@@ -129,11 +130,12 @@
       <p class="description">
         Upload your <code>mentee_info.csv</code>. This tool will:
         <ol>
-          <li>Keep only the required columns (<strong>Name</strong>, <strong>Email</strong>, <strong>Year</strong>, <strong>Major</strong>, <strong>Industry</strong>, <strong>GradArea</strong>, <strong>Goal</strong>, <strong>Ethnicity</strong>, <strong>Identity</strong>, <strong>AffinityGroup</strong>, and the six weighting fields).</li>
+          <li>Keep only required columns (Name, Email, Major, Industry, GradArea, Goal, Ethnicity, Identity, AffinityGroup, plus six weighting fields).</li>
+          <li><strong>Year</strong> is optional.</li>
           <li>Add a <code>NumStudent</code> column initialized to 0.</li>
-          <li>Validate each row (e.g. names contain no digits, weightings are integers).</li>
-          <li>Report any missing columns or invalid values.</li>
-          <li>Let you download the cleaned CSV if no errors remain.</li>
+          <li>Validate each row (names contain no digits; weightings are numeric).</li>
+          <li>Report missing columns or invalid values.</li>
+          <li>Allow download of the cleaned CSV if no errors remain.</li>
         </ol>
       </p>
 
@@ -148,26 +150,26 @@
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
   <script>
     const requiredCols = [
-      'Name','Email','Year','Major','Industry','GradArea','Goal',
+      'Name','Email','Major','Industry','GradArea','Goal',
       'Ethnicity','Identity','AffinityGroup',
       'EthnicityWeighting','IdentityWeighting','AcademicWeighting',
       'GraduateWeighting','IndustryWeighting','GoalWeighting',
       'AffinityWeighting'
     ];
 
-    function isInteger(val) {
-      return val === '' || /^-?\d+$/.test(val.toString().trim());
+    function isNumber(val) {
+      return val === '' || /^[+-]?\d+(\.\d+)?$/.test(val.toString().trim());
     }
     function isListOfStrings(val) {
       return val === '' || typeof val === 'string';
     }
     function hasDigit(str) {
-      return /\d/.test(str);
+      return typeof str === 'string' && /\d/.test(str);
     }
 
     const fileInput = document.getElementById('fileInput');
     const processBtn = document.getElementById('processBtn');
-    const errorsDiv = document.getElementById('errors');
+    const errorsDiv  = document.getElementById('errors');
     const downloadLink = document.getElementById('downloadLink');
 
     fileInput.addEventListener('change', () => {
@@ -188,20 +190,22 @@
           if (errors.length) {
             errors.forEach(e => msgs.push(`Parse error: ${e.message}`));
           }
-          // Check columns
+
+          // Check required columns
           const headers = Object.keys(data[0] || {});
           requiredCols.forEach(col => {
             if (!headers.includes(col)) {
               msgs.push(`Missing column: ${col}`);
             }
           });
-          // Validate rows
+
+          // Validate each row
           data.forEach((row, i) => {
             const rowNum = i + 1;
             if (!isListOfStrings(row.Name) || hasDigit(row.Name)) {
               msgs.push(`Invalid Name at row ${rowNum}: "${row.Name}"`);
             }
-            ['Email','Year','Major','Industry','GradArea','Goal','Ethnicity','Identity','AffinityGroup']
+            ['Email','Major','Industry','GradArea','Goal','Ethnicity','Identity','AffinityGroup']
               .forEach(field => {
                 if (!isListOfStrings(row[field])) {
                   msgs.push(`Invalid ${field} at row ${rowNum}: "${row[field]}"`);
@@ -209,16 +213,18 @@
               });
             ['EthnicityWeighting','IdentityWeighting','AcademicWeighting','GraduateWeighting','IndustryWeighting','GoalWeighting','AffinityWeighting']
               .forEach(field => {
-                if (!isInteger(row[field])) {
+                if (!isNumber(row[field])) {
                   msgs.push(`Invalid ${field} at row ${rowNum}: "${row[field]}"`);
                 }
               });
           });
+
           if (msgs.length) {
             errorsDiv.innerHTML = msgs.map(m => `<div>• ${m}</div>`).join('');
             return;
           }
-          // Build cleaned data
+
+          // Build and download cleaned CSV
           const cleaned = data.map(row => {
             const out = {};
             requiredCols.forEach(col => out[col] = row[col] || '');

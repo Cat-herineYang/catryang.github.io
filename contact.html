@@ -6,19 +6,19 @@
   <title>Contact — Catherine Yang</title>
 
   <!-- Match index page fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Open+Sans:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Open+Sans:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css" />
 
   <style>
     :root {
       --bg-color: #f7f9fa;
       --nav-bg: #ffffff;
-      --nav-border: #e1e8ed;
+      --border-color: #e1e8ed;
       --accent-color: #005f73;
       --text-color: #102a43;
       --subtext-color: #34495e;
       --card-bg: #ffffff;
-      --border-radius: 8px;
+      --radius: 6px;
     }
     * {
       box-sizing: border-box;
@@ -33,17 +33,18 @@
     }
     nav {
       background: var(--nav-bg);
-      border-bottom: 1px solid var(--nav-border);
+      border-bottom: 1px solid var(--border-color);
       padding: 1rem 2rem;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
     }
     nav a {
-      color: var(--text-color);
-      text-decoration: none;
-      padding: 1rem;
       font-family: 'Open Sans', sans-serif;
       letter-spacing: 0.05em;
-      display: inline-block;
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
       transition: color 0.2s;
     }
     nav a:hover {
@@ -55,16 +56,16 @@
     }
     .contact-card {
       background: var(--card-bg);
-      border: 1px solid var(--nav-border);
-      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
       padding: 2rem;
       max-width: 500px;
       margin: 2rem auto;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.05);
     }
     .contact-card h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       color: var(--accent-color);
       margin-bottom: 1rem;
     }
@@ -100,7 +101,7 @@
       <p><strong>Location:</strong> Durham, North Carolina</p>
       <p><strong>On Campus:</strong> Hudson Hall — <a href="https://www.google.com/maps/search/?api=1&query=Hudson+Hall+Duke+University" target="_blank">View map</a></p>
       <p><strong>Phone:</strong> <a href="tel:+19196384508">(919) 638-4508</a></p>
-      <p><strong>Email:</strong> <a href="mailto:catherine.yang@duke.edu">catherine.yang@duke.edu</a></p>
+      <p><strong>Email:</strong> <a href="mailto:catherine.yang@duke.edu">catherine dot yang at duke dot edu</a></p>
     </div>
   </main>
 </body>
