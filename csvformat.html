@@ -1,32 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Mentee Info Processor — Catherine Yang</title>
 
+  <!-- Aesthetic fonts to match index page -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Open+Sans:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css"/>
 
   <style>
-    :root {
-      --accent-color: #005f73;
-      --text-color: #102a43;
-      --bg-color: #f7f9fa;
-      --card-bg: #ffffff;
-      --border-color: #e1e8ed;
-      --radius: 6px;
-    }
     body {
-      margin: 0;
-      background: var(--bg-color);
-      color: var(--text-color);
       font-family: 'Open Sans', sans-serif;
-      line-height: 1.6;
+      margin: 0;
+      background: #f7f9fa;
+      color: #102a43;
     }
     nav {
-      background: var(--card-bg);
-      border-bottom: 1px solid var(--border-color);
+      background: #ffffff;
+      border-bottom: 1px solid #e1e8ed;
       padding: 1rem 2rem;
       display: flex;
       justify-content: center;
@@ -35,106 +27,89 @@
     nav a {
       font-family: 'Open Sans', sans-serif;
       letter-spacing: 0.05em;
-      color: var(--text-color);
+      color: #102a43;
       text-decoration: none;
       font-weight: 500;
       transition: color 0.2s;
     }
     nav a:hover {
-      color: var(--accent-color);
-    }
-    main {
-      max-width: 720px;
-      margin: 4rem auto;
-      padding: 0 1rem;
+      color: #005f73;
     }
     h1 {
       font-family: 'Playfair Display', serif;
       font-size: 2.8rem;
       text-align: center;
-      color: var(--accent-color);
-      margin-bottom: 1.5rem;
+      margin-top: 1rem;
+      color: #005f73;
     }
     .container {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 2rem;
+      max-width: 720px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #ffffff;
+      border: 1px solid #e1e8ed;
+      border-radius: 6px;
       box-shadow: 0 3px 8px rgba(0,0,0,0.05);
     }
-    p.description {
+    p.description, p.description ol, p.description ol li {
+      font-family: 'Open Sans', sans-serif;
       font-size: 1.15rem;
       line-height: 1.6;
       text-align: left;
-      margin-bottom: 1.5rem;
-    }
-    p.description ol {
-      padding-left: 1.25rem;
+      margin: 1rem auto 0;
+      max-width: 600px;
     }
     code {
       background: #eef3f3;
       padding: 0 4px;
       border-radius: 4px;
     }
-
-    input[type="file"] {
+    /* minimalistic button styles */
+    input[type="file"],
+    button,
+    #downloadLink {
       appearance: none;
-      -webkit-appearance: none;
       background: transparent;
-      border: 1px solid var(--accent-color);
-      border-radius: var(--radius);
+      border: 1px solid #005f73;
+      border-radius: 6px;
       padding: 0.6rem 1.2rem;
-      color: var(--accent-color);
+      color: #005f73;
       font-family: 'Open Sans', sans-serif;
       cursor: pointer;
-      margin: 1rem auto;
       display: block;
+      margin: 1rem auto 0;
+      text-decoration: none;
+      text-align: center;
     }
     input[type="file"]::file-selector-button {
       background: transparent;
       border: none;
       padding: 0;
       margin-right: 0.5rem;
-      color: var(--accent-color);
+      color: #005f73;
       font-family: inherit;
       cursor: pointer;
     }
-
-    button,
-    #downloadLink {
-      background: transparent;
-      border: 1px solid var(--accent-color);
-      border-radius: var(--radius);
-      padding: 0.6rem 1.2rem;
-      color: var(--accent-color);
-      font-family: 'Open Sans', sans-serif;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-      margin: 1rem auto 0;
-    }
     button:disabled {
-      border-color: var(--border-color);
-      color: var(--border-color);
+      border-color: #e1e8ed;
+      color: #e1e8ed;
       cursor: not-allowed;
     }
     button:hover:not(:disabled),
     #downloadLink:hover {
-      background: var(--accent-color);
+      background: #005f73;
       color: #fff;
     }
-
     #errors {
-      margin-top: 1rem;
-      text-align: left;
-      max-height: 200px;
-      overflow-y: auto;
+      max-width: 720px;
+      margin: 1rem auto;
       padding: 0.5rem;
-      border: 1px solid #e0b4b4;
+      border: 1px solid #b02a37;
       border-radius: 4px;
       background: #fff1f0;
       color: #b02a37;
       font-size: 0.95rem;
+      text-align: left;
     }
   </style>
 </head>
@@ -152,35 +127,36 @@
     <h1>Mentee Info Processor</h1>
     <div class="container">
       <p class="description">
-        This tool takes the raw CSV exports from your Qualtrics surveys—
+        This tool takes the CSV exports from your Qualtrics surveys—
         <code>mentee_info.csv</code> and optionally <code>mentor_info.csv</code>—
-        and prepares them for direct input into your matching algorithm.
+        and prepares them for your matching algorithm.
       </p>
       <p class="description">
         Instructions:
         <ol>
-          <li>Export your Qualtrics survey responses as CSV files and save them as <code>mentee_info.csv</code> (and <code>mentor_info.csv</code> if using).</li>
-          <li>Place these CSV files in the same directory where this page is hosted.</li>
+          <li>Export your survey responses from Qualtrics as CSV files named <code>mentee_info.csv</code> (and <code>mentor_info.csv</code> if used).</li>
+          <li>Place those CSV files in the same folder as this page on your web server.</li>
           <li>Click “Process CSV” to:
             <ol type="a">
               <li>Keep only required columns (<strong>Name, Email, Major, Industry, GradArea, Goal, Ethnicity, Identity, AffinityGroup, plus six weighting fields</strong>).</li>
-              <li>Pass through <strong>Year</strong> if present (optional).</li>
+              <li>Pass through <strong>Year</strong> if it exists (optional).</li>
               <li>Add a <code>NumStudent</code> column initialized to <code>0</code>.</li>
-              <li>Validate rows (names must not contain digits; weightings must be numeric).</li>
+              <li>Validate each row (names must not contain digits; weightings must be numeric).</li>
               <li>Report any missing columns or invalid values below.</li>
-              <li>If no errors remain, download the cleaned CSV for your matching algorithm.</li>
+              <li>If no errors remain, download the cleaned CSV for direct input into your matching algorithm.</li>
             </ol>
           </li>
         </ol>
       </p>
 
-      <input type="file" id="fileInput" accept=".csv" />
+      <input type="file" id="fileInput" accept=".csv"/>
       <button id="processBtn" disabled>Process CSV</button>
       <div id="errors"></div>
       <a id="downloadLink">Download Cleaned CSV</a>
     </div>
   </main>
 
+  <!-- PapaParse for CSV parsing -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
   <script>
     const requiredCols = [
@@ -201,23 +177,27 @@
       return typeof str === 'string' && /\d/.test(str);
     }
 
-    const fileInput = document.getElementById('fileInput');
-    const processBtn = document.getElementById('processBtn');
-    const errorsDiv  = document.getElementById('errors');
+    const fileInput    = document.getElementById('fileInput');
+    const processBtn   = document.getElementById('processBtn');
+    const errorsDiv    = document.getElementById('errors');
     const downloadLink = document.getElementById('downloadLink');
 
     fileInput.addEventListener('change', () => {
-      processBtn.disabled = !fileInput.files.length;
-      errorsDiv.textContent = '';
+      processBtn.disabled     = !fileInput.files.length;
+      errorsDiv.textContent   = '';
       downloadLink.style.display = 'none';
     });
-    
+
     processBtn.addEventListener('click', () => {
-      errorsDiv.textContent = '';
+      errorsDiv.textContent     = '';
       downloadLink.style.display = 'none';
+
       Papa.parse(fileInput.files[0], {
         header: true,
         skipEmptyLines: true,
+        error: err => {
+          errorsDiv.textContent = 'Parsing error: ' + err.message;
+        },
         complete: ({ data, errors }) => {
           const msgs = [];
           if (errors.length) {
@@ -227,34 +207,44 @@
           requiredCols.forEach(col => {
             if (!headers.includes(col)) msgs.push(`Missing column: ${col}`);
           });
-          data.forEach((row,i) => {
-            const r = i+1;
-            if (!isListOfStrings(row.Name)||hasDigit(row.Name))
+          data.forEach((row, i) => {
+            const r = i + 1;
+            if (!isListOfStrings(row.Name) || hasDigit(row.Name)) {
               msgs.push(`Invalid Name at row ${r}: "${row.Name}"`);
+            }
             ['Email','Major','Industry','GradArea','Goal','Ethnicity','Identity','AffinityGroup']
-              .forEach(f=>{ if(!isListOfStrings(row[f])) msgs.push(`Invalid ${f} at row ${r}: "${row[f]}"`) });
+              .forEach(f => {
+                if (!isListOfStrings(row[f])) msgs.push(`Invalid ${f} at row ${r}: "${row[f]}"`);
+              });
             ['EthnicityWeighting','IdentityWeighting','AcademicWeighting','GraduateWeighting','IndustryWeighting','GoalWeighting','AffinityWeighting']
-              .forEach(f=>{ if(!isNumber(row[f])) msgs.push(`Invalid ${f} at row ${r}: "${row[f]}"`) });
+              .forEach(f => {
+                if (!isNumber(row[f])) msgs.push(`Invalid ${f} at row ${r}: "${row[f]}"`);
+              });
           });
+
           if (msgs.length) {
-            errorsDiv.innerHTML = msgs.map(m=>`<div>• ${m}</div>`).join('');
+            errorsDiv.innerHTML = msgs.map(m => `<div>• ${m}</div>`).join('');
             return;
           }
-          const cleaned = data.map(r=>{
-            const o={};
-            requiredCols.forEach(c=>o[c]=r[c]||'');
-            o.NumStudent=0;
-            return o;
-          });
-          const csv = Papa.unparse(cleaned);
-          const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
-          downloadLink.href = URL.createObjectURL(blob);
-          downloadLink.download = 'mentee_info_cleaned.csv';
-          downloadLink.style.display = 'inline-block';
+
+          try {
+            const cleaned = data.map(row => {
+              const out = {};
+              requiredCols.forEach(col => (out[col] = row[col] || ''));
+              out.NumStudent = 0;
+              return out;
+            });
+            const csv  = Papa.unparse(cleaned);
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            downloadLink.href     = URL.createObjectURL(blob);
+            downloadLink.download = 'mentee_info_cleaned.csv';
+            downloadLink.style.display = 'inline-block';
+          } catch (e) {
+            errorsDiv.textContent = 'Error generating download: ' + e.message;
+          }
         }
       });
     });
   </script>
-
 </body>
 </html>
