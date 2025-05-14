@@ -5,81 +5,46 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Research — Catherine Yang</title>
 
-  <!-- Match index page fonts -->
+  <!-- Aesthetic fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Open+Sans:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css" />
 
   <style>
-    :root {
-      --primary-color: #2c3e50;
-      --accent-color: #005f73;
-      --text-color: #102a43;
-      --bg-color: #f7f9fa;
-      --card-bg: #ffffff;
-      --border-color: #e1e8ed;
-      --radius: 6px;
-    }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    /* match index page typography */
     body {
+      font-family: 'Open Sans', sans-serif;
+      margin: 0;
       background: var(--bg-color);
       color: var(--text-color);
-      font-family: 'Open Sans', sans-serif;
-      line-height: 1.6;
-    }
-    nav {
-      background: var(--card-bg);
-      border-bottom: 1px solid var(--border-color);
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
     }
     nav a {
       font-family: 'Open Sans', sans-serif;
       letter-spacing: 0.05em;
-      color: var(--text-color);
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-    nav a:hover {
-      color: var(--accent-color);
-    }
-    main {
-      max-width: 720px;
-      margin: 4rem auto;
-      padding: 0 1rem;
-      text-align: center;
     }
     h1 {
       font-family: 'Playfair Display', serif;
       font-size: 2.8rem;
-      color: var(--accent-color);
-      margin-bottom: 2rem;
+      margin: 1rem 0;
     }
+    /* placeholder card styling */
     .placeholder {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
       border-radius: var(--radius);
-      padding: 2.5rem 1.5rem;
+      padding: 2rem;
+      max-width: 600px;
+      margin: 2rem auto;
+      text-align: center;
       box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-      display: inline-block;
-      max-width: 100%;
     }
     .placeholder h2 {
       font-family: 'Playfair Display', serif;
       font-size: 1.8rem;
-      color: var(--primary-color);
       margin-bottom: 1rem;
     }
     .placeholder p {
       font-family: 'Open Sans', sans-serif;
       font-size: 1.15rem;
-      color: var(--text-color);
       margin-bottom: 1.5rem;
     }
     .progress-bar {
@@ -88,23 +53,17 @@
       background: var(--border-color);
       border-radius: var(--radius);
       overflow: hidden;
-      margin: 0 auto;
     }
     .progress-bar div {
       width: 40%;
       height: 100%;
       background: var(--accent-color);
-      border-radius: var(--radius);
       animation: progress 2s ease-in-out infinite;
     }
     @keyframes progress {
       0%   { width: 20%; }
       50%  { width: 60%; }
       100% { width: 20%; }
-    }
-    @media (max-width: 600px) {
-      h1 { font-size: 2.2rem; }
-      .placeholder { padding: 2rem 1rem; }
     }
   </style>
 </head>
